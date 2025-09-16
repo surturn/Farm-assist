@@ -71,16 +71,16 @@ const Home = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link to="/diagnosis">
+              <Link to="/auth">
                 <Button size="lg" className="hero-gradient text-white border-0 glow-effect group">
-                  Start Crop Analysis
+                  Get Started Today
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Button>
               </Link>
               
-              <Link to="/dashboard">
+              <Link to="/diagnosis">
                 <Button variant="outline" size="lg">
-                  View Dashboard
+                  Try Demo
                 </Button>
               </Link>
             </div>
@@ -148,7 +148,7 @@ const Home = () => {
                 Join thousands of farmers who are already using AI to optimize their crops, 
                 reduce waste, and increase profitability.
               </p>
-              <Link to="/diagnosis">
+              <Link to="/auth">
                 <Button 
                   size="lg" 
                   variant="secondary"

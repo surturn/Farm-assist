@@ -11,14 +11,18 @@ import {
   Camera, 
   CloudRain, 
   BarChart3,
-  Leaf 
+  Leaf,
+  LogOut,
+  User
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const location = useLocation();
+  const { user, signOut, loading } = useAuth();
 
   const navItems = [
     { href: "/", label: "Home", icon: Home },
@@ -57,8 +61,35 @@ const Navigation = () => {
           ))}
         </div>
 
-        {/* Theme Toggle & Mobile Menu */}
+        {/* User Actions & Theme Toggle */}
         <div className="flex items-center gap-2">
+          {!loading && (
+            <>
+              {user ? (
+                <>
+                  <div className="hidden md:flex items-center gap-2 text-sm">
+                    <User className="h-4 w-4" />
+                    <span className="font-medium">
+                      {user.profile?.name || user.email?.split('@')[0]}
+                    </span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={signOut}
+                    className="rounded-full"
+                  >
+                    <LogOut className="h-4 w-4" />
+                  </Button>
+                </>
+              ) : (
+                <Button asChild variant="ghost" size="sm" className="rounded-full">
+                  <Link to="/auth">Sign In</Link>
+                </Button>
+              )}
+            </>
+          )}
+          
           <Button
             variant="ghost"
             size="sm"
@@ -101,6 +132,45 @@ const Navigation = () => {
               <span className="font-medium">{label}</span>
             </Link>
           ))}
+          
+          {/* Mobile Auth Actions */}
+          {!loading && (
+            <div className="pt-2 border-t border-border mt-4">
+              {user ? (
+                <>
+                  <div className="flex items-center gap-3 px-4 py-3 text-sm">
+                    <User className="h-5 w-5" />
+                    <span className="font-medium">
+                      {user.profile?.name || user.email?.split('@')[0]}
+                    </span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      signOut();
+                      setIsOpen(false);
+                    }}
+                    className="w-full justify-start gap-3 px-4 py-3 h-auto"
+                  >
+                    <LogOut className="h-5 w-5" />
+                    <span className="font-medium">Sign Out</span>
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  asChild
+                  variant="ghost"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full justify-start gap-3 px-4 py-3 h-auto"
+                >
+                  <Link to="/auth">
+                    <User className="h-5 w-5" />
+                    <span className="font-medium">Sign In</span>
+                  </Link>
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       )}
     </nav>
